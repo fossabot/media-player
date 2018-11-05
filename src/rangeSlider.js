@@ -11,32 +11,34 @@ const defaultOptions = {
   className: "",
 
   total: 100,
-  current: 0,
+  value: 0,
   draggerSize: 12,
-  barHeight: 4
+  barHeight: 4,
+  onChange: null,
+
+  // todo
+  min: 0,
+  max: 100
 };
 
 export default class RangeSlider {
   constructor(options) {
     this.options = Object.assign({}, defaultOptions, options);
-    this.init();
+    this._init();
   }
 
-  init() {
-    this.render();
+  _init() {
+    this._render();
   }
 
-  createContainer() {
+  _createContainer() {
     const container = document.createElement("div");
     container.className = `range-slider ${this.options.className}`;
     container.style.height = `${this.options.barHeight}px`;
-    container.onclick = event => {
-      console.log("progress bar clicked", event.pageX);
-    };
     return container;
   }
 
-  createBar() {
+  _createBar() {
     const bar = document.createElement("span");
     bar.style.height = `${this.options.barHeight}px`;
     bar.style.paddingLeft = `${this.options.draggerSize / 2}px`;
@@ -45,39 +47,46 @@ export default class RangeSlider {
     return bar;
   }
 
-  createDragger() {
+  _createDragger() {
     const dragger = document.createElement("span");
     dragger.style.width = `${this.options.draggerSize}px`;
     dragger.style.height = `${this.options.draggerSize}px`;
     dragger.style.top = `-${(this.options.draggerSize -
       this.options.barHeight) /
       2}px`;
-    // dragger.style.right = `-${DRAGGER_WITH / 2}px`;
     dragger.className = "progress-dragger";
     return dragger;
   }
 
-  createSlider() {
-    const container = this.createContainer();
-    const bar = this.createBar();
-    const dragger = this.createDragger();
+  calculateValue(percentage) {
+    return Math.round(
+      (this.options.max - this.options.min) * (percentage / 100)
+    );
+  }
+
+  _createSlider() {
+    const container = this._createContainer();
+    const bar = this._createBar();
+    const dragger = this._createDragger();
     bar.appendChild(dragger);
     container.appendChild(bar);
 
     let isMoving = false;
 
-    var move = event => {
+    const move = event => {
       if (isMoving) {
         let min = 0,
           max = container.offsetWidth - dragger.offsetWidth,
           mousePos =
             event.pageX - container.offsetLeft - dragger.offsetWidth / 2,
           position = mousePos > max ? max : mousePos < min ? min : mousePos;
-        let value = (position / max) * 100;
         dragger.style.left = `${position}px`;
+        let value = (position / max) * 100;
         bar.style.width = `${value}%`;
+
+        value = this.calculateValue(value);
         console.warn(value);
-        this.setCurrent(value);
+        this.setValue(value);
       }
     };
 
@@ -97,9 +106,9 @@ export default class RangeSlider {
     return container;
   }
 
-  render() {
+  _render() {
     const { host } = this.options;
-    const slider = this.createSlider();
+    const slider = this._createSlider();
     host.innerHTML = "";
     host.appendChild(slider);
   }
@@ -108,11 +117,14 @@ export default class RangeSlider {
     //
   }
 
-  getCurrent() {
-    return this.options.current;
+  getValue() {
+    return this.options.value;
   }
 
-  setCurrent(value) {
-    this.options.current = value;
+  setValue(value) {
+    this.options.value = value;
+    if (this.options.onChange) {
+      this.options.onChange(value);
+    }
   }
 }
