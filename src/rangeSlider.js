@@ -1,3 +1,5 @@
+// reference: https://stackoverflow.com/a/33006528/1553656
+
 import "./rangeSlider.css";
 
 const defaultOptions = {
@@ -10,7 +12,7 @@ const defaultOptions = {
 
   total: 100,
   current: 0,
-  draggerWidth: 12,
+  draggerSize: 12,
   barHeight: 4
 };
 
@@ -26,7 +28,7 @@ export default class RangeSlider {
 
   createContainer() {
     const container = document.createElement("div");
-    container.className = "range-slider";
+    container.className = `range-slider ${this.options.className}`;
     container.style.height = `${this.options.barHeight}px`;
     container.onclick = event => {
       console.log("progress bar clicked", event.pageX);
@@ -37,16 +39,17 @@ export default class RangeSlider {
   createBar() {
     const bar = document.createElement("span");
     bar.style.height = `${this.options.barHeight}px`;
-    bar.style.paddingLeft = `${this.options.draggerWidth / 2}px`;
-    bar.style.paddingRight = `${this.options.draggerWidth / 2}px`;
+    bar.style.paddingLeft = `${this.options.draggerSize / 2}px`;
+    bar.style.paddingRight = `${this.options.draggerSize / 2}px`;
     bar.className = "progress-bar";
     return bar;
   }
 
   createDragger() {
     const dragger = document.createElement("span");
-    dragger.style.width = `${this.options.draggerWidth}px`;
-    dragger.style.top = `-${(this.options.draggerWidth -
+    dragger.style.width = `${this.options.draggerSize}px`;
+    dragger.style.height = `${this.options.draggerSize}px`;
+    dragger.style.top = `-${(this.options.draggerSize -
       this.options.barHeight) /
       2}px`;
     // dragger.style.right = `-${DRAGGER_WITH / 2}px`;
