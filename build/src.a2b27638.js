@@ -199,7 +199,9 @@ var defaultOptions = {
   host: document.body,
   className: "",
   total: 100,
-  current: 0
+  current: 0,
+  draggerWidth: 12,
+  barHeight: 4
 };
 
 var RangeSlider =
@@ -209,7 +211,6 @@ function () {
     _classCallCheck(this, RangeSlider);
 
     this.options = Object.assign({}, defaultOptions, options);
-    this.current = this.options.current;
     this.init();
   }
 
@@ -223,6 +224,7 @@ function () {
     value: function createContainer() {
       var container = document.createElement("div");
       container.className = "range-slider";
+      container.style.height = "".concat(this.options.barHeight, "px");
 
       container.onclick = function (event) {
         console.log("progress bar clicked", event.pageX);
@@ -234,6 +236,9 @@ function () {
     key: "createBar",
     value: function createBar() {
       var bar = document.createElement("span");
+      bar.style.height = "".concat(this.options.barHeight, "px");
+      bar.style.paddingLeft = "".concat(this.options.draggerWidth / 2, "px");
+      bar.style.paddingRight = "".concat(this.options.draggerWidth / 2, "px");
       bar.className = "progress-bar";
       return bar;
     }
@@ -241,10 +246,10 @@ function () {
     key: "createDragger",
     value: function createDragger() {
       var dragger = document.createElement("span");
-      dragger.className = "progress-dragger"; // dragger.onmousemove = event => {
-      //   console.warn(`dragger move`, event.pageX);
-      // };
+      dragger.style.width = "".concat(this.options.draggerWidth, "px");
+      dragger.style.top = "-".concat((this.options.draggerWidth - this.options.barHeight) / 2, "px"); // dragger.style.right = `-${DRAGGER_WITH / 2}px`;
 
+      dragger.className = "progress-dragger";
       return dragger;
     }
   }, {
@@ -256,17 +261,17 @@ function () {
       var bar = this.createBar();
       var dragger = this.createDragger();
       bar.appendChild(dragger);
-      container.appendChild(bar); // ===
-
+      container.appendChild(bar);
       var isMoving = false;
 
-      var move = function move(e) {
+      var move = function move(event) {
         if (isMoving) {
           var min = 0,
               max = container.offsetWidth - dragger.offsetWidth,
-              mousePos = e.pageX - container.offsetLeft - dragger.offsetWidth / 2,
-              position = mousePos > max ? max : mousePos < min ? min : mousePos,
-              value = Math.floor(position / max * 100);
+              mousePos = event.pageX - container.offsetLeft - dragger.offsetWidth / 2,
+              position = mousePos > max ? max : mousePos < min ? min : mousePos;
+          var value = position / max * 100;
+          dragger.style.left = "".concat(position, "px");
           bar.style.width = "".concat(value, "%");
           console.warn(value);
 
@@ -274,17 +279,16 @@ function () {
         }
       };
 
-      container.addEventListener("mousedown", function (e) {
+      container.addEventListener("mousedown", function (event) {
         isMoving = true;
-        move(e);
+        move(event);
       });
-      document.addEventListener("mouseup", function (e) {
+      document.addEventListener("mouseup", function (event) {
         isMoving = false;
       });
-      document.addEventListener("mousemove", function (e) {
-        move(e);
-      }); // ===
-
+      document.addEventListener("mousemove", function (event) {
+        move(event);
+      });
       return container;
     }
   }, {
@@ -302,12 +306,12 @@ function () {
   }, {
     key: "getCurrent",
     value: function getCurrent() {
-      return this.current;
+      return this.options.current;
     }
   }, {
     key: "setCurrent",
     value: function setCurrent(value) {
-      this.current = value;
+      this.options.current = value;
     }
   }]);
 
@@ -352,7 +356,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50524" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51375" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

@@ -9,13 +9,14 @@ const defaultOptions = {
   className: "",
 
   total: 100,
-  current: 0
+  current: 0,
+  draggerWidth: 12,
+  barHeight: 4
 };
 
 export default class RangeSlider {
   constructor(options) {
     this.options = Object.assign({}, defaultOptions, options);
-    this.current = this.options.current;
     this.init();
   }
 
@@ -26,6 +27,7 @@ export default class RangeSlider {
   createContainer() {
     const container = document.createElement("div");
     container.className = "range-slider";
+    container.style.height = `${this.options.barHeight}px`;
     container.onclick = event => {
       console.log("progress bar clicked", event.pageX);
     };
@@ -34,17 +36,21 @@ export default class RangeSlider {
 
   createBar() {
     const bar = document.createElement("span");
+    bar.style.height = `${this.options.barHeight}px`;
+    bar.style.paddingLeft = `${this.options.draggerWidth / 2}px`;
+    bar.style.paddingRight = `${this.options.draggerWidth / 2}px`;
     bar.className = "progress-bar";
     return bar;
   }
 
   createDragger() {
     const dragger = document.createElement("span");
+    dragger.style.width = `${this.options.draggerWidth}px`;
+    dragger.style.top = `-${(this.options.draggerWidth -
+      this.options.barHeight) /
+      2}px`;
+    // dragger.style.right = `-${DRAGGER_WITH / 2}px`;
     dragger.className = "progress-dragger";
-    // dragger.onmousemove = event => {
-    //   console.warn(`dragger move`, event.pageX);
-    // };
-
     return dragger;
   }
 
@@ -55,36 +61,35 @@ export default class RangeSlider {
     bar.appendChild(dragger);
     container.appendChild(bar);
 
-    // ===
     let isMoving = false;
 
-    var move = e => {
+    var move = event => {
       if (isMoving) {
-        var min = 0,
+        let min = 0,
           max = container.offsetWidth - dragger.offsetWidth,
-          mousePos = e.pageX - container.offsetLeft - dragger.offsetWidth / 2,
-          position = mousePos > max ? max : mousePos < min ? min : mousePos,
-          value = Math.floor((position / max) * 100);
-
+          mousePos =
+            event.pageX - container.offsetLeft - dragger.offsetWidth / 2,
+          position = mousePos > max ? max : mousePos < min ? min : mousePos;
+        let value = (position / max) * 100;
+        dragger.style.left = `${position}px`;
         bar.style.width = `${value}%`;
         console.warn(value);
         this.setCurrent(value);
       }
     };
 
-    container.addEventListener("mousedown", function(e) {
+    container.addEventListener("mousedown", function(event) {
       isMoving = true;
-      move(e);
+      move(event);
     });
 
-    document.addEventListener("mouseup", function(e) {
+    document.addEventListener("mouseup", function(event) {
       isMoving = false;
     });
 
-    document.addEventListener("mousemove", function(e) {
-      move(e);
+    document.addEventListener("mousemove", function(event) {
+      move(event);
     });
-    // ===
 
     return container;
   }
@@ -101,10 +106,10 @@ export default class RangeSlider {
   }
 
   getCurrent() {
-    return this.current;
+    return this.options.current;
   }
 
   setCurrent(value) {
-    this.current = value;
+    this.options.current = value;
   }
 }
