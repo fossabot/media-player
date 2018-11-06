@@ -5,10 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>audio player</title>
+    <title>media player</title>
     <link rel="stylesheet" href="./style.css">
-</head>
-
 <body>
     <div class="app">
         <div class="slider-example">
@@ -22,7 +20,7 @@
         </div>
         <hr>
         <div class="slider-example">
-            <p>costimize the size</p>
+            <p>custimize the size</p>
             <div id="slider3"></div>
         </div>
         <hr>
@@ -37,12 +35,16 @@
         <div class="slider-example">
             <p>customize range</p>
             <p>current value is: <span id="slider5Value"></span> </p>
-            <span>min:0</span>
-            <div id="slider5"></div>
-            <span>max:200</span>
+            <div class="container">
+                <div class="section">min:0</div>
+                <div class="section">
+                    <div id="slider5"></div>
+                </div>
+                <div class="section">max:200</div>
+            </div>
         </div>
     </div>
-    <script src="./src/index.js"></script>
+    <script src="./index.js"></script>
 </body>
 
 </html>

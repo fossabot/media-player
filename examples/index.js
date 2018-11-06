@@ -1,23 +1,18 @@
-import RangeSlider from "./rangeSlider";
+import RangeSlider from "../src/rangeSlider/rangeSlider";
 
-new RangeSlider({
-  host: document.querySelector("#slider1")
-});
+new RangeSlider(document.querySelector("#slider1"));
 
-new RangeSlider({
-  host: document.querySelector("#slider2"),
+new RangeSlider(document.querySelector("#slider2"), {
   className: "my-slider"
 });
 
-new RangeSlider({
-  host: document.querySelector("#slider3"),
+new RangeSlider(document.querySelector("#slider3"), {
   barHeight: 6,
-  draggerWidth: 10
+  draggerSize: 16
 });
 
 let value4Holder = document.querySelector("#slider4Value");
-let slider4 = new RangeSlider({
-  host: document.querySelector("#slider4"),
+let slider4 = new RangeSlider(document.querySelector("#slider4"), {
   onChange: value => {
     value4Holder.innerText = value;
   }
@@ -25,8 +20,7 @@ let slider4 = new RangeSlider({
 value4Holder.innerText = slider4.getValue();
 
 let value5Holder = document.querySelector("#slider5Value");
-let slider5 = new RangeSlider({
-  host: document.querySelector("#slider5"),
+let slider5 = new RangeSlider(document.querySelector("#slider5"), {
   min: 0,
   max: 200,
   onChange: value => {

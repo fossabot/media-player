@@ -3,11 +3,6 @@
 import "./rangeSlider.css";
 
 const defaultOptions = {
-  /**
-   * the render host
-   */
-  host: document.body,
-
   className: "",
 
   total: 100,
@@ -22,8 +17,9 @@ const defaultOptions = {
 };
 
 export default class RangeSlider {
-  constructor(options) {
+  constructor(parent, options) {
     this.options = Object.assign({}, defaultOptions, options);
+    this.parent = parent;
     this._init();
   }
 
@@ -78,7 +74,11 @@ export default class RangeSlider {
         let min = 0,
           max = container.offsetWidth - dragger.offsetWidth,
           mousePos =
-            event.pageX - container.offsetLeft - dragger.offsetWidth / 2,
+            event.pageX -
+            // container.offsetLeft
+            container.getBoundingClientRect()
+              .left /* absolute element calcuates the `offsetLeft relative to relative parents, thus we got 0 in some scenario` */ -
+            dragger.offsetWidth / 2,
           position = mousePos > max ? max : mousePos < min ? min : mousePos;
         dragger.style.left = `${position}px`;
         let value = (position / max) * 100;
@@ -107,10 +107,9 @@ export default class RangeSlider {
   }
 
   _render() {
-    const { host } = this.options;
     const slider = this._createSlider();
-    host.innerHTML = "";
-    host.appendChild(slider);
+    this.parent.innerHTML = "";
+    this.parent.appendChild(slider);
   }
 
   destroy() {
