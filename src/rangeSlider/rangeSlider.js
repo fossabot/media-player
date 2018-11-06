@@ -31,6 +31,8 @@ export default class RangeSlider {
 
   _init() {
     this._render();
+    const position = this._calculatePosition(this.options.value);
+    this._updateUI(position);
   }
 
   _createContainer() {

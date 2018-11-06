@@ -8,4 +8,6 @@ export class AudioPlayer(){
         this.url = url;
         this.options = Object.assign({},defaultOptions,options);
     }
+
+    
 }
