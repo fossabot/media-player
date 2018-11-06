@@ -29,8 +29,27 @@ let slider5 = new RangeSlider(document.querySelector("#slider5"), {
 });
 value5Holder.innerText = slider5.getValue();
 
+let value5_1Holder = document.querySelector("#slider5_1Value");
+let slider5_1 = new RangeSlider(document.querySelector("#slider5_1"), {
+  min: -100,
+  max: 100,
+  value:0,
+  onChange: value => {
+    value5_1Holder.innerText = value;
+  }
+});
+value5_1Holder.innerText = slider5_1.getValue();
+
 const slider6 = new RangeSlider(document.querySelector("#slider6"));
+document.querySelector("#getValue").onclick = () => {
+  document.querySelector("#result").innerText = slider6.getValue();
+};
+document.querySelector("#setValue").onclick = () => {
+  slider6.setValue(50);
+};
+
+const slider7 = new RangeSlider(document.querySelector("#slider7"));
 document.querySelector("#destroy").onclick = () => {
   console.warn("cleared");
-  slider6.destroy();
+  slider7.destroy();
 };

@@ -18,7 +18,7 @@ const defaultOptions = {
 export default class RangeSlider {
   constructor(parent, options) {
     this.options = Object.assign({}, defaultOptions, options);
-    this.parent = parent;
+    this.parent = parent || document.body;
     this.isMoving = false;
     this.container = null;
 
@@ -63,10 +63,11 @@ export default class RangeSlider {
     return dragger;
   }
 
-  calculateValue(percentage) {
-    return Math.round(
-      (this.options.max - this.options.min) * (percentage / 100)
-    );
+  _calculateValue(position, positionMax) {
+    const value =
+      (position * (this.options.max - this.options.min)) / positionMax +
+      this.options.min;
+    return Math.round(value);
   }
 
   _createSlider() {
@@ -82,24 +83,23 @@ export default class RangeSlider {
   }
 
   _move(event) {
-    if (this.isMoving) {
-      let min = 0,
-        max = this.container.offsetWidth - this.dragger.offsetWidth,
-        mousePos =
-          event.pageX -
-          // container.offsetLeft
-          this.container.getBoundingClientRect()
-            .left /* absolute element calcuates the `offsetLeft relative to relative parents, thus we got 0 in some scenario` */ -
-          this.dragger.offsetWidth / 2,
-        position = mousePos > max ? max : mousePos < min ? min : mousePos;
-      this.dragger.style.left = `${position}px`;
-      let value = (position / max) * 100;
-      this.bar.style.width = `${value}%`;
+    if (!this.isMoving) return;
+    let min = 0,
+      max = this.container.offsetWidth - this.dragger.offsetWidth,
+      mousePos =
+        event.pageX -
+        // container.offsetLeft
+        this.container.getBoundingClientRect()
+          .left /* absolute element calcuates the `offsetLeft relative to relative parents, thus we got 0 in some scenario` */ -
+        this.dragger.offsetWidth / 2,
+      position = mousePos > max ? max : mousePos < min ? min : mousePos;
+    this.dragger.style.left = `${position}px`;
+    let width = (position / max) * 100;
+    this.bar.style.width = `${width}%`;
 
-      value = this.calculateValue(value);
-      console.warn(value);
-      this.setValue(value);
-    }
+    const value = this._calculateValue(position, max);
+    console.warn(value);
+    this.setValue(value);
   }
 
   _handleMouseDown(event) {
