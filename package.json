@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel ./examples/index.html --open --out-dir build",
-    "buld:slider": "parcel build ./src/rangeSlider/index.js"
+    "build:slider": "parcel build ./src/rangeSlider/index.js"
   },
   "devDependencies": {
     "parcel-bundler": "^1.10.3"

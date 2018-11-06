@@ -11,7 +11,6 @@ const defaultOptions = {
   barHeight: 4,
   onChange: null,
 
-  // todo
   min: 0,
   max: 100
 };
@@ -20,6 +19,13 @@ export default class RangeSlider {
   constructor(parent, options) {
     this.options = Object.assign({}, defaultOptions, options);
     this.parent = parent;
+    this.isMoving = false;
+    this.container = null;
+
+    this._handleMouseDown = this._handleMouseDown.bind(this);
+    this._handleMouseUp = this._handleMouseUp.bind(this);
+    this._handleMouseMove = this._handleMouseMove.bind(this);
+
     this._init();
   }
 
@@ -31,6 +37,7 @@ export default class RangeSlider {
     const container = document.createElement("div");
     container.className = `range-slider ${this.options.className}`;
     container.style.height = `${this.options.barHeight}px`;
+    this.container = container;
     return container;
   }
 
@@ -40,6 +47,7 @@ export default class RangeSlider {
     bar.style.paddingLeft = `${this.options.draggerSize / 2}px`;
     bar.style.paddingRight = `${this.options.draggerSize / 2}px`;
     bar.className = "progress-bar";
+    this.bar = bar;
     return bar;
   }
 
@@ -51,6 +59,7 @@ export default class RangeSlider {
       this.options.barHeight) /
       2}px`;
     dragger.className = "progress-dragger";
+    this.dragger = dragger;
     return dragger;
   }
 
@@ -67,43 +76,56 @@ export default class RangeSlider {
     bar.appendChild(dragger);
     container.appendChild(bar);
 
-    let isMoving = false;
-
-    const move = event => {
-      if (isMoving) {
-        let min = 0,
-          max = container.offsetWidth - dragger.offsetWidth,
-          mousePos =
-            event.pageX -
-            // container.offsetLeft
-            container.getBoundingClientRect()
-              .left /* absolute element calcuates the `offsetLeft relative to relative parents, thus we got 0 in some scenario` */ -
-            dragger.offsetWidth / 2,
-          position = mousePos > max ? max : mousePos < min ? min : mousePos;
-        dragger.style.left = `${position}px`;
-        let value = (position / max) * 100;
-        bar.style.width = `${value}%`;
-
-        value = this.calculateValue(value);
-        console.warn(value);
-        this.setValue(value);
-      }
-    };
-
-    container.addEventListener("mousedown", function(event) {
-      isMoving = true;
-      move(event);
-    });
-
-    document.addEventListener("mouseup", function(event) {
-      isMoving = false;
-    });
-
-    document.addEventListener("mousemove", function(event) {
-      move(event);
-    });
+    this._bindEvent(container);
 
     return container;
+  }
+
+  _move(event) {
+    if (this.isMoving) {
+      let min = 0,
+        max = this.container.offsetWidth - this.dragger.offsetWidth,
+        mousePos =
+          event.pageX -
+          // container.offsetLeft
+          this.container.getBoundingClientRect()
+            .left /* absolute element calcuates the `offsetLeft relative to relative parents, thus we got 0 in some scenario` */ -
+          this.dragger.offsetWidth / 2,
+        position = mousePos > max ? max : mousePos < min ? min : mousePos;
+      this.dragger.style.left = `${position}px`;
+      let value = (position / max) * 100;
+      this.bar.style.width = `${value}%`;
+
+      value = this.calculateValue(value);
+      console.warn(value);
+      this.setValue(value);
+    }
+  }
+
+  _handleMouseDown(event) {
+    this.isMoving = true;
+    this._move(event);
+  }
+
+  _handleMouseUp(event) {
+    this.isMoving = false;
+  }
+
+  _handleMouseMove(event) {
+    this._move(event);
+  }
+
+  _bindEvent(container) {
+    container.addEventListener("mousedown", this._handleMouseDown);
+    document.addEventListener("mouseup", this._handleMouseUp);
+    document.addEventListener("mousemove", this._handleMouseMove);
+  }
+
+  _removeEvent() {
+    if (!this.container) return;
+    this.container.removeEventListener("mousedown", this._handleMouseDown);
+    document.removeEventListener("mouseup", this._handleMouseUp);
+    document.removeEventListener("mousemove", this._handleMouseMove);
   }
 
   _render() {
@@ -113,7 +135,7 @@ export default class RangeSlider {
   }
 
   destroy() {
-    //
+    this._removeEvent();
   }
 
   getValue() {

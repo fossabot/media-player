@@ -1,4 +1,4 @@
-import RangeSlider from "../src/rangeSlider/rangeSlider";
+import RangeSlider from "../src/rangeSlider";
 
 new RangeSlider(document.querySelector("#slider1"));
 
@@ -28,3 +28,9 @@ let slider5 = new RangeSlider(document.querySelector("#slider5"), {
   }
 });
 value5Holder.innerText = slider5.getValue();
+
+const slider6 = new RangeSlider(document.querySelector("#slider6"));
+document.querySelector("#destroy").onclick = () => {
+  console.warn("cleared");
+  slider6.destroy();
+};
