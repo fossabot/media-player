@@ -70,6 +70,14 @@ export default class RangeSlider {
     return Math.round(value);
   }
 
+  _calculatePosition(value) {
+    const positionMax = this._getPositionMax();
+    return (
+      ((value - this.options.min) * positionMax) /
+      (this.options.max - this.options.min)
+    );
+  }
+
   _createSlider() {
     const container = this._createContainer();
     const bar = this._createBar();
@@ -85,7 +93,7 @@ export default class RangeSlider {
   _move(event) {
     if (!this.isMoving) return;
     let min = 0,
-      max = this.container.offsetWidth - this.dragger.offsetWidth,
+      max = this._getPositionMax(),
       mousePos =
         event.pageX -
         // container.offsetLeft
@@ -93,13 +101,23 @@ export default class RangeSlider {
           .left /* absolute element calcuates the `offsetLeft relative to relative parents, thus we got 0 in some scenario` */ -
         this.dragger.offsetWidth / 2,
       position = mousePos > max ? max : mousePos < min ? min : mousePos;
-    this.dragger.style.left = `${position}px`;
-    let width = (position / max) * 100;
-    this.bar.style.width = `${width}%`;
+
+    // this._updateUI(position);
 
     const value = this._calculateValue(position, max);
     console.warn(value);
     this.setValue(value);
+  }
+
+  _getPositionMax() {
+    return this.container.offsetWidth - this.dragger.offsetWidth;
+  }
+
+  _updateUI(position) {
+    const positionMax = this._getPositionMax();
+    this.dragger.style.left = `${position}px`;
+    let width = (position / positionMax) * 100;
+    this.bar.style.width = `${width}%`;
   }
 
   _handleMouseDown(event) {
@@ -147,5 +165,7 @@ export default class RangeSlider {
     if (this.options.onChange) {
       this.options.onChange(value);
     }
+    const position = this._calculatePosition(value);
+    this._updateUI(position);
   }
 }
