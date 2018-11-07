@@ -17,8 +17,9 @@ export default class AudioPlayer {
     this.slider = null;
     this.isPlaying = false;
     this.player = null;
+    this.sliderId = this._getSliderId();
 
-    this._togglePlay = this._togglePlay.bind(this);
+    this.togglePlay = this.togglePlay.bind(this);
 
     this._init();
   }
@@ -33,7 +34,7 @@ export default class AudioPlayer {
   }
 
   _initialEvents() {
-    this.toggleBtn.onclick = this._togglePlay;
+    this.toggleBtn.onclick = this.togglePlay;
   }
 
   _initialPlayer() {
@@ -57,20 +58,31 @@ export default class AudioPlayer {
       this._playStatusChange(false);
     };
     this.player.preload = "metadata";
+    // this._initializeSlider(this.player.duration);
+    // this._updateTimeDisplay(this.player.currentTime, this.player.duration);
   }
 
   _removeEvents() {
     this.toggleBtn.onclick = undefined;
   }
 
-  _togglePlay() {
+  togglePlay() {
     const isPlaying = !this.isPlaying;
     if (isPlaying) {
-      this.player.play();
+      this.play();
     } else {
-      this.player.pause();
+      this.pause();
     }
-    this._playStatusChange(isPlaying);
+  }
+
+  play() {
+    this.player.play();
+    this._playStatusChange(true);
+  }
+
+  pause() {
+    this.player.pause();
+    this._playStatusChange(false);
   }
 
   _playStatusChange(isPlaying) {
@@ -79,12 +91,20 @@ export default class AudioPlayer {
   }
 
   _initializeSlider(duration) {
-    this.slider = new RangeSlider(document.querySelector(".player-slider"), {
+    this.slider = new RangeSlider(document.querySelector(`#${this.sliderId}`), {
       max: duration,
       onChange: value => {
         this.player.currentTime = value;
       }
     });
+  }
+
+  /**
+   * guid generation taken from https://stackoverflow.com/questions/6860853/generate-random-string-for-div-id/6860916#6860916
+   */
+  _getSliderId() {
+    var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    return randLetter + Date.now();
   }
 
   _createUI() {
@@ -100,7 +120,9 @@ export default class AudioPlayer {
 
     const progress = document.createElement("div");
     progress.className = "player-section player-progress";
-    progress.innerHTML = `<div class="player-slider"></div>`;
+    progress.innerHTML = `<div class="player-slider" id="${
+      this.sliderId
+    }"></div>`;
     container.appendChild(progress);
 
     const timer = document.createElement("div");

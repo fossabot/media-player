@@ -106,10 +106,7 @@ export default class RangeSlider {
         this.dragger.offsetWidth / 2,
       position = mousePos > max ? max : mousePos < min ? min : mousePos;
 
-    // this._updateUI(position);
-
     const value = this._calculateValue(position, max);
-    console.warn(value);
     this.setValue(value);
     if (this.options.onChange) {
       this.options.onChange(value);
