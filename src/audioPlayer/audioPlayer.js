@@ -50,6 +50,12 @@ export default class AudioPlayer {
       this.slider.setValue(time);
       this._updateTimeDisplay(time, this.player.duration);
     };
+    this.player.onended = () => {
+      this._playStatusChange(false);
+    };
+    this.player.onerror = () => {
+      this._playStatusChange(false);
+    };
     this.player.preload = "metadata";
   }
 
@@ -58,13 +64,18 @@ export default class AudioPlayer {
   }
 
   _togglePlay() {
-    this.isPlaying = !this.isPlaying;
-    this.toggleBtn.className = `icon icon-${this.isPlaying ? "pause" : "play"}`;
-    if (this.isPlaying) {
+    const isPlaying = !this.isPlaying;
+    if (isPlaying) {
       this.player.play();
     } else {
       this.player.pause();
     }
+    this._playStatusChange(isPlaying);
+  }
+
+  _playStatusChange(isPlaying) {
+    this.isPlaying = isPlaying;
+    this.toggleBtn.className = `icon icon-${this.isPlaying ? "pause" : "play"}`;
   }
 
   _initializeSlider(duration) {
