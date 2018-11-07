@@ -1,3 +1,47 @@
-.audio-player{
-    
+
+.audio-player {
+    font-size: 12px;
+    padding: 16px;
+    display: table;
+    table-layout: fixed;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #ededed;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    color: #757575;
+}
+
+.audio-player .player-section {
+    display: table-cell;
+    vertical-align: middle;
+}
+.audio-player .player-section.player-time {
+    width: 70px;
+}
+
+.audio-player .player-section.player-progress {
+    padding: 0 10px;
+}
+.audio-player .player-section.player-toggle {
+    width: 25px;
+}
+
+.audio-player .icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+
+.audio-player .icon.icon-play {
+    background-image: url(./assets/play.png);
+}
+
+.audio-player .icon.icon-pause {
+    background-image: url(./assets/pause.png);
 }

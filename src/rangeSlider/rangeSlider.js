@@ -8,7 +8,7 @@ const defaultOptions = {
   total: 100,
   value: 0,
   draggerSize: 12,
-  barHeight: 4,
+  barHeight: 2,
   onChange: null,
 
   min: 0,
@@ -21,6 +21,8 @@ export default class RangeSlider {
     this.parent = parent || document.body;
     this.isMoving = false;
     this.container = null;
+    this.dragger = null;
+    this.bar = null;
 
     this._handleMouseDown = this._handleMouseDown.bind(this);
     this._handleMouseUp = this._handleMouseUp.bind(this);
@@ -109,6 +111,9 @@ export default class RangeSlider {
     const value = this._calculateValue(position, max);
     console.warn(value);
     this.setValue(value);
+    if (this.options.onChange) {
+      this.options.onChange(value);
+    }
   }
 
   _getPositionMax() {
@@ -164,9 +169,6 @@ export default class RangeSlider {
 
   setValue(value) {
     this.options.value = value;
-    if (this.options.onChange) {
-      this.options.onChange(value);
-    }
     const position = this._calculatePosition(value);
     this._updateUI(position);
   }
