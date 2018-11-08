@@ -52,6 +52,8 @@ import VideoPlayer from "../src/videoPlayer";
 
 ### `MediaPlayer`
 
+Mixed audio and video player with the guarantee that only one of them is playing.
+
 ```html
 <div id="audioPlayer"></div>
 <div id="videoPlayer"></div>
