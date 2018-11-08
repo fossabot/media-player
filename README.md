@@ -34,3 +34,38 @@ import RangeSlider from "../src/audioPlayer";
     url: "url/for/audio"
   });
 ```
+
+### `VideoPlayer`
+
+
+```html
+<div id="videoPlayer"></div>
+```
+
+```js
+import VideoPlayer from "../src/videoPlayer";
+  new VideoPlayer({
+    parent: document.querySelector("#videoPlayer"),
+    url: "url/for/video"
+  });
+```
+
+### `MediaPlayer`
+
+```html
+<div id="audioPlayer"></div>
+<div id="videoPlayer"></div>
+```
+
+```js
+import MediaPlayer from "../src/index";
+
+  new MediaPlayer('audio',{
+    parent: document.querySelector("#audioPlayer"),
+    url: "url/for/audio"
+  });
+  new MediaPlayer('video',{
+    parent: document.querySelector("#videoPlayer"),
+    url: "url/for/video"
+  });
+```
