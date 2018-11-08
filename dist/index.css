@@ -19,7 +19,7 @@
     vertical-align: middle;
 }
 .audio-player .player-section.player-time {
-    width: 70px;
+    width: 75px;
 }
 
 .audio-player .player-section.player-progress {
@@ -104,7 +104,7 @@
     left: 0;
     position: fixed;
     background: rgba(0, 0, 0, .5);
-    z-index: 999;
+    z-index: 9999;
 }
 
 .video-player-popup video {
