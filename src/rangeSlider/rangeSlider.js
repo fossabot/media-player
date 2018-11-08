@@ -5,7 +5,6 @@ import "./rangeSlider.css";
 const defaultOptions = {
   className: "",
 
-  total: 100,
   value: 0,
   draggerSize: 12,
   barHeight: 2,
