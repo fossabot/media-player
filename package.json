@@ -5,9 +5,13 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel ./examples/index.html --open --out-dir build",
-    "build:slider": "parcel build ./src/rangeSlider/index.js",
-    "build:audioplayer": "parcel build ./src/audioPlayer/index.js",
-    "prepublish": "yarn build:audioplayer"
+    "build:slider": "parcel build ./src/rangeSlider/index.js --out-dir dist/slider",
+    "build:audioplayer": "parcel build ./src/audioPlayer/index.js --out-dir dist/audio",
+    "build:videoplayer": "parcel build ./src/videoPlayer/index.js --out-dir dist/video",
+    "build:mediaplayer": "parcel build ./src/index.js",
+    "build:all": "rm -rf dist && yarn build:slider && yarn build:audioplayer && yarn build:videoplayer && yarn build:mediaplayer",
+    "build:dev": "rm -rf dist && yarn build:mediaplayer --no-minify",
+    "prepublish": "yarn build:mediaplayer"
   },
   "devDependencies": {
     "parcel-bundler": "^1.10.3"

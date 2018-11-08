@@ -13,10 +13,8 @@ const players = [];
 function initialSingletonPlay() {
   // guarantee that here's only one player is playing
   document.addEventListener('play', e => {
-    console.warn('onplay triggered');
     for (var i = 0, len = players.length; i < len; i++) {
       if (players[i].player != e.target) {
-        console.warn('paused');
         players[i].player.pause();
       }
     }
