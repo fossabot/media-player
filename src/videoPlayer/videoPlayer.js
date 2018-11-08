@@ -19,10 +19,7 @@ export default class VideoPlayer {
     this.options = Object.assign({}, defaultOptions, options);
 
     this.container = null;
-    this.isPlaying = false;
     this.player = null;
-
-    this.togglePlay = this.togglePlay.bind(this);
 
     this._init();
   }
@@ -47,10 +44,6 @@ export default class VideoPlayer {
       const playBtn = document.createElement('span');
       playBtn.className = 'icon icon-video-start-play';
       playBtn.onclick = () => {
-        // TODO:
-        // - open popup
-        // - show controls
-        // - play video
         this._openPopup();
       };
       this.container.appendChild(playBtn);
@@ -60,27 +53,12 @@ export default class VideoPlayer {
     this.container.appendChild(this.player);
   }
 
-  togglePlay() {
-    const isPlaying = !this.isPlaying;
-    if (isPlaying) {
-      this.play();
-    } else {
-      this.pause();
-    }
-  }
-
   play() {
     this.player.play();
-    this._playStatusChange(true);
   }
 
   pause() {
     this.player.pause();
-    this._playStatusChange(false);
-  }
-
-  _playStatusChange(isPlaying) {
-    this.isPlaying = isPlaying;
   }
 
   _createUI() {
