@@ -49,7 +49,7 @@ The main purpose is to usage anywhere regardless of frontend framework ( for exa
 new RangeSlider(node,options);
 ```
 
-Example:
+#### Example
 
 ```html
 <div id="mySlider"></div>
