@@ -1,5 +1,5 @@
 import { runSliderExamples } from "./sliderExamples";
-import { runAudioPlayerExamples } from "./audioPlayerExamples";
+import { runPlayerExamples } from "./playerExamples";
 
 runSliderExamples();
-runAudioPlayerExamples();
+runPlayerExamples();

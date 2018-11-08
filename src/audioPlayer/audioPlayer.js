@@ -1,39 +1,37 @@
 /*
- * @author: wayou 
- * @date: 2018-11-08 10:25:29 
+ * @author: wayou
+ * @date: 2018-11-08 10:25:29
  * @description: audio player with ui control
- * media events references: https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events
- * 
+ * media events references:
+ * https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events
+ *
  */
 
-import "./audioPlayer.css";
-import RangeSlider from "../rangeSlider";
+import './audioPlayer.css';
+import RangeSlider from '../rangeSlider';
 
 const defaultOptions = {
   parent: document.body,
   autoPlay: false,
-  duration: 0
+  duration: 0,
+  url: ''
 };
 
 const players = [];
 
 function initialSingletonPlay() {
-  console.count("listenall");
+  console.count('listenall');
   // guarantee that here's only one player is playing
   // const players = document.querySelectorAll("audio");
-  document.addEventListener(
-    "play",
-    e => {
-      console.warn("onplay");
-      for (var i = 0, len = players.length; i < len; i++) {
-        if (players[i] != e.target) {
-          console.warn("paused");
-          players[i].pause();
-        }
+  document.addEventListener('play', e => {
+    console.warn('onplay');
+    for (var i = 0, len = players.length; i < len; i++) {
+      if (players[i] != e.target) {
+        console.warn('paused');
+        players[i].pause();
       }
-    },
-    true
-  );
+    }
+  }, true);
 }
 
 initialSingletonPlay();
@@ -57,7 +55,7 @@ export default class AudioPlayer {
 
   _init() {
     this.container = this._createUI();
-    this.options.parent.innerHTML = "";
+    this.options.parent.innerHTML = '';
     this.options.parent.appendChild(this.container);
 
     this._initialPlayer();
@@ -97,9 +95,10 @@ export default class AudioPlayer {
       this._playStatusChange(false);
     };
 
-    this.player.preload = "metadata";
+    this.player.preload = 'metadata';
 
-    // we need to append the audio to DOM or the document.addEventListener won't fire
+    // we need to append the audio to DOM or the document.addEventListener won't
+    // fire
     this.container.appendChild(this.player);
     players.push(this.player);
   }
@@ -129,7 +128,7 @@ export default class AudioPlayer {
 
   _playStatusChange(isPlaying) {
     this.isPlaying = isPlaying;
-    this.toggleBtn.className = `icon icon-${this.isPlaying ? "pause" : "play"}`;
+    this.toggleBtn.className = `icon icon-${this.isPlaying ? 'pause' : 'play'}`;
   }
 
   _initializeSlider(duration) {
@@ -142,7 +141,8 @@ export default class AudioPlayer {
   }
 
   /**
-   * guid generation taken from https://stackoverflow.com/questions/6860853/generate-random-string-for-div-id/6860916#6860916
+   * guid generation taken from
+   * https://stackoverflow.com/questions/6860853/generate-random-string-for-div-id/6860916#6860916
    */
   _getSliderId() {
     var randLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
@@ -150,28 +150,27 @@ export default class AudioPlayer {
   }
 
   _createUI() {
-    const container = document.createElement("div");
-    container.className = "audio-player";
+    const container = document.createElement('div');
+    container.className = 'audio-player';
 
-    const toggle = document.createElement("div");
-    toggle.className = "player-section player-toggle";
-    this.toggleBtn = document.createElement("span");
+    const toggle = document.createElement('div');
+    toggle.className = 'player-section player-toggle';
+    this.toggleBtn = document.createElement('span');
     this.toggleBtn.className = `icon icon-play`;
     toggle.appendChild(this.toggleBtn);
     container.appendChild(toggle);
 
-    const progress = document.createElement("div");
-    progress.className = "player-section player-progress";
-    progress.innerHTML = `<div class="player-slider" id="${
-      this.sliderId
-    }"></div>`;
+    const progress = document.createElement('div');
+    progress.className = 'player-section player-progress';
+    progress.innerHTML =
+        `<div class="player-slider" id="${this.sliderId}"></div>`;
     container.appendChild(progress);
 
-    const timer = document.createElement("div");
-    timer.className = "player-section player-time";
-    this.timeHoler = document.createElement("div");
-    this.timeHoler.className = "time";
-    this.timeHoler.innerText = "00:00";
+    const timer = document.createElement('div');
+    timer.className = 'player-section player-time';
+    this.timeHoler = document.createElement('div');
+    this.timeHoler.className = 'time';
+    this.timeHoler.innerText = '00:00';
     timer.append(this.timeHoler);
 
     container.appendChild(timer);
@@ -189,9 +188,9 @@ export default class AudioPlayer {
     date.setMilliseconds(seconds * 1000);
     let result = date.toISOString().substr(11, 8);
 
-    let splits = result.split(":");
-    if (splits.length > 2 && splits[0] === "00") {
-      result = splits.slice(1).join(":");
+    let splits = result.split(':');
+    if (splits.length > 2 && splits[0] === '00') {
+      result = splits.slice(1).join(':');
     }
     return result;
   }
