@@ -146,8 +146,8 @@ Mixed audio and video player with the guarantee that only one of them is playing
   - required
   - default: N/A
 
-[video-options]: #
-[audio-options]: #
+[video-options]: #options-2
+[audio-options]: #options-1
 
 #### Usage
 
