@@ -36,6 +36,7 @@ export function runSliderExamples() {
     min: -100,
     max: 100,
     value: 0,
+    precision: 2,
     onChange: value => {
       value5_1Holder.innerText = value;
     }

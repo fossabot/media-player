@@ -12,7 +12,8 @@ const defaultOptions = {
   onChange: null,
 
   min: 0,
-  max: 100
+  max: 100,
+  precision: 0
 };
 
 export default class RangeSlider {
@@ -72,7 +73,7 @@ export default class RangeSlider {
     const value =
       (position * (this.options.max - this.options.min)) / positionMax +
       this.options.min;
-    return Math.round(value);
+    return +value.toFixed(this.options.precision);
   }
 
   _calculatePosition(value) {
@@ -100,7 +101,9 @@ export default class RangeSlider {
     let min = 0,
       max = this._getPositionMax();
 
-    // Instead of using `offsetLeft`, we need to using `getBoundingClientRect().left. Because the offsetLeft is relative to none static parent.
+    // Instead of using `offsetLeft`, we need to using
+    // `getBoundingClientRect().left. Because the offsetLeft is relative to none
+    // static parent.
     let elementLeft = this.container.getBoundingClientRect().left;
 
     // fix for scroll
