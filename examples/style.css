@@ -21,7 +21,6 @@ body {
 .slider-example .container {
     display: flex;
     align-items: center;
-    /* text-align: center; */
 }
 
 .slider-example .section {

@@ -27,6 +27,7 @@ export default class RangeSlider {
     this._handleMouseDown = this._handleMouseDown.bind(this);
     this._handleMouseUp = this._handleMouseUp.bind(this);
     this._handleMouseMove = this._handleMouseMove.bind(this);
+    this._handleResize = this._handleResize.bind(this);
 
     this._init();
   }
@@ -97,13 +98,16 @@ export default class RangeSlider {
   _move(event) {
     if (!this.isMoving) return;
     let min = 0,
-      max = this._getPositionMax(),
-      mousePos =
-        event.pageX -
-        // container.offsetLeft
-        this.container.getBoundingClientRect()
-          .left /* absolute element calcuates the `offsetLeft relative to relative parents, thus we got 0 in some scenario` */ -
-        this.dragger.offsetWidth / 2,
+      max = this._getPositionMax();
+
+    // Instead of using `offsetLeft`, we need to using `getBoundingClientRect().left. Because the offsetLeft is relative to none static parent.
+    let elementLeft = this.container.getBoundingClientRect().left;
+
+    // fix for scroll
+    elementLeft += document.documentElement.scrollLeft;
+
+    if (elementLeft < 0) elementLeft = Math.abs(elementLeft) / 2;
+    let mousePos = event.pageX - elementLeft - this.dragger.offsetWidth / 2,
       position = mousePos > max ? max : mousePos < min ? min : mousePos;
 
     const value = this._calculateValue(position, max);
@@ -137,10 +141,15 @@ export default class RangeSlider {
     this._move(event);
   }
 
+  _handleResize(event) {
+    this._init();
+  }
+
   _bindEvent(container) {
     container.addEventListener("mousedown", this._handleMouseDown);
     document.addEventListener("mouseup", this._handleMouseUp);
     document.addEventListener("mousemove", this._handleMouseMove);
+    window.addEventListener("resize", this._handleResize, true);
   }
 
   _removeEvent() {
