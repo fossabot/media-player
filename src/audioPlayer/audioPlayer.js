@@ -1,3 +1,11 @@
+/*
+ * @author: wayou 
+ * @date: 2018-11-08 10:25:29 
+ * @description: audio player with ui control
+ * media events references: https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events
+ * 
+ */
+
 import "./audioPlayer.css";
 import RangeSlider from "../rangeSlider";
 
@@ -6,6 +14,29 @@ const defaultOptions = {
   autoPlay: false,
   duration: 0
 };
+
+const players = [];
+
+function initialSingletonPlay() {
+  console.count("listenall");
+  // guarantee that here's only one player is playing
+  // const players = document.querySelectorAll("audio");
+  document.addEventListener(
+    "play",
+    e => {
+      console.warn("onplay");
+      for (var i = 0, len = players.length; i < len; i++) {
+        if (players[i] != e.target) {
+          console.warn("paused");
+          players[i].pause();
+        }
+      }
+    },
+    true
+  );
+}
+
+initialSingletonPlay();
 
 export default class AudioPlayer {
   constructor(options) {
@@ -41,25 +72,36 @@ export default class AudioPlayer {
     if (!this.options.url) {
       throw new Error(`missing audio url`);
     }
+
     this.player = new Audio(this.options.url);
     this.player.onloadedmetadata = () => {
       this._initializeSlider(this.player.duration);
       this._updateTimeDisplay(this.player.currentTime, this.player.duration);
     };
+
     this.player.ontimeupdate = event => {
       const time = event.currentTarget.currentTime;
       this.slider.setValue(time);
       this._updateTimeDisplay(time, this.player.duration);
     };
+
     this.player.onended = () => {
       this._playStatusChange(false);
     };
+
+    this.player.onpause = () => {
+      this._playStatusChange(false);
+    };
+
     this.player.onerror = () => {
       this._playStatusChange(false);
     };
+
     this.player.preload = "metadata";
-    // this._initializeSlider(this.player.duration);
-    // this._updateTimeDisplay(this.player.currentTime, this.player.duration);
+
+    // we need to append the audio to DOM or the document.addEventListener won't fire
+    this.container.appendChild(this.player);
+    players.push(this.player);
   }
 
   _removeEvents() {
@@ -113,7 +155,7 @@ export default class AudioPlayer {
 
     const toggle = document.createElement("div");
     toggle.className = "player-section player-toggle";
-    this.toggleBtn = document.createElement("i");
+    this.toggleBtn = document.createElement("span");
     this.toggleBtn.className = `icon icon-play`;
     toggle.appendChild(this.toggleBtn);
     container.appendChild(toggle);
