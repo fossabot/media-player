@@ -6,7 +6,7 @@ The main purpose is to usage anywhere regardless of frontend framework ( for exa
 
 ## Components
 
-### range slider
+### `RangeSlider`
 
 #### Usage
 
@@ -16,6 +16,21 @@ The main purpose is to usage anywhere regardless of frontend framework ( for exa
 ```
 
 ```js
-import RangeSlider from "../src/rangeSlider/rangeSlider";
+import RangeSlider from "../src/rangeSlider";
 new RangeSlider(document.querySelector("#mySlider"));
+```
+
+### `AudioPlayer`
+
+
+```html
+<div id="myPlayer"></div>
+```
+
+```js
+import RangeSlider from "../src/audioPlayer";
+  new AudioPlayer({
+    parent: document.querySelector("#audioPlayer2"),
+    url: "url/for/audio"
+  });
 ```
