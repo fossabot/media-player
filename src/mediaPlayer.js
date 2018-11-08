@@ -13,11 +13,11 @@ const players = [];
 function initialSingletonPlay() {
   // guarantee that here's only one player is playing
   document.addEventListener('play', e => {
-    console.warn('onplay triggered',e.target)
+    console.warn('onplay triggered');
     for (var i = 0, len = players.length; i < len; i++) {
       if (players[i].player != e.target) {
         console.warn('paused');
-        players[i].pause();
+        players[i].player.pause();
       }
     }
   }, true);
@@ -29,7 +29,9 @@ const defaultOptions = {
   parent: document.body,
   autoPlay: false,
   duration: 0,
-  url: ''
+  url: '',
+  // playing the video inline or in popup
+  isInlinePlay: true
 };
 
 export default class MediaPlayer {
@@ -52,18 +54,4 @@ export default class MediaPlayer {
       return new VideoPlayer(options);
     }
   }
-
-  // add(options) {
-  //   this.options.media.push(options);
-  //   this.players.push(this.createPlayer(options));
-  // }
-
-  // remove(index) {
-  //   this.medias.splice(index, 1);
-  //   this.players.splice(index, 1);
-  // }
-
-  // clear() {
-  //   this.players = [];
-  // }
 }

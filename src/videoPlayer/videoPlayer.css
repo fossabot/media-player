@@ -1,1 +1,21 @@
-.video-player{}
+.video-player {
+    position: relative;
+}
+
+.video-player .icon {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 1;
+}
+
+.video-player .icon.icon-video-start-play {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url(./assets/play.png);
+}

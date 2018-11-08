@@ -10,7 +10,7 @@ export function runPlayerExamples() {
   new MediaPlayer('video', {
     parent: document.querySelector('#player2'),
     url:
-        'https://www.w3schools.com/html/mov_bbb.mp4'
+        'http://umu-pd.bj.bcebos.com/videoweike/teacher/weike/96a38d/transcoding/1539077181.1311.36085.mp4'
   });
 
   new MediaPlayer('audio', {
@@ -22,5 +22,12 @@ export function runPlayerExamples() {
     parent: document.querySelector('#player4'),
     url:
         'http://umu-pd.bj.bcebos.com/videoweike/teacher/weike/96a38d/transcoding/1539077181.1311.36085.mp4'
+  });
+
+  new MediaPlayer('video', {
+    parent: document.querySelector('#player5'),
+    url:
+        'http://umu-pd.bj.bcebos.com/videoweike/teacher/weike/96a38d/transcoding/1539077181.1311.36085.mp4',
+    isInlinePlay: false
   });
 }

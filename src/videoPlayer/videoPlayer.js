@@ -9,7 +9,8 @@ import './videoPlayer.css';
 const defaultOptions = {
   parent: document.body,
   autoPlay: false,
-  duration: 0
+  duration: 0,
+  isInlinePlay: true
 };
 
 export default class VideoPlayer {
@@ -35,12 +36,25 @@ export default class VideoPlayer {
 
   _initialPlayer() {
     if (!this.options.url) {
-      throw new Error(`missing audio url`);
+      throw new Error(`missing video url`);
     }
 
     this.player = document.createElement('video');
     this.player.src = this.options.url;
-    this.player.setAttribute('controls', 'controls');
+
+    if (!this.options.isInlinePlay) {
+      const playBtn = document.createElement('span');
+      playBtn.className = 'icon icon-video-start-play';
+      playBtn.onclick = () => {
+        // TODO:
+        // - open popup
+        // - show controls
+        // - play video
+      };
+      this.container.appendChild(playBtn);
+    } else {
+      this.player.setAttribute('controls', 'controls');
+    }
     this.container.appendChild(this.player);
   }
 
@@ -71,27 +85,5 @@ export default class VideoPlayer {
     const container = document.createElement('div');
     container.className = 'video-player';
     return container;
-  }
-
-  _updateTimeDisplay(time, duration) {
-    time = this._formatTime2HHMMSS(time);
-    duration = this._formatTime2HHMMSS(duration);
-    this.timeHoler.innerText = `${time}/${duration}`;
-  }
-
-  _formatTime2HHMMSS(seconds) {
-    const date = new Date(null);
-    date.setMilliseconds(seconds * 1000);
-    let result = date.toISOString().substr(11, 8);
-
-    let splits = result.split(':');
-    if (splits.length > 2 && splits[0] === '00') {
-      result = splits.slice(1).join(':');
-    }
-    return result;
-  }
-
-  destroy() {
-    this._removeEvents();
   }
 }

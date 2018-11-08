@@ -17,25 +17,6 @@ const defaultOptions = {
   url: ''
 };
 
-const players = [];
-
-function initialSingletonPlay() {
-  console.count('listenall');
-  // guarantee that here's only one player is playing
-  // const players = document.querySelectorAll("audio");
-  document.addEventListener('play', e => {
-    console.warn('onplay');
-    for (var i = 0, len = players.length; i < len; i++) {
-      if (players[i] != e.target) {
-        console.warn('paused');
-        players[i].pause();
-      }
-    }
-  }, true);
-}
-
-initialSingletonPlay();
-
 export default class AudioPlayer {
   constructor(options) {
     this.options = Object.assign({}, defaultOptions, options);
@@ -100,7 +81,6 @@ export default class AudioPlayer {
     // we need to append the audio to DOM or the document.addEventListener won't
     // fire
     this.container.appendChild(this.player);
-    players.push(this.player);
   }
 
   _removeEvents() {
@@ -180,7 +160,7 @@ export default class AudioPlayer {
   _updateTimeDisplay(time, duration) {
     time = this._formatTime2HHMMSS(time);
     duration = this._formatTime2HHMMSS(duration);
-    this.timeHoler.innerText = `${time}/${duration}`;
+    this.timeHoler.innerText = `${time} / ${duration}`;
   }
 
   _formatTime2HHMMSS(seconds) {
