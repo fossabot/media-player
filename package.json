@@ -11,7 +11,7 @@
     "build:mediaplayer": "parcel build ./src/index.js",
     "build:all": "rm -rf dist && yarn build:slider && yarn build:audioplayer && yarn build:videoplayer && yarn build:mediaplayer",
     "build:dev": "rm -rf dist && yarn build:mediaplayer --no-minify",
-    "build:docs": "rm -rf docs && parcel build ./examples/index.html --out-dir docs --public-url ./",
+    "build:docs": "rm -rf docs && parcel build ./examples/index.html --out-dir docs --public-url ./  --no-minify",
     "prepublish": "yarn build:mediaplayer",
     "test": "yarn build:all && jasmine"
   },
