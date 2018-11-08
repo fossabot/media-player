@@ -88,10 +88,10 @@ new AudioPlayer(options);
 
 ```js
 import RangeSlider from "../src/audioPlayer";
-  new AudioPlayer({
-    parent: document.querySelector("#audioPlayer2"),
-    url: "url/for/audio"
-  });
+new AudioPlayer({
+  parent: document.querySelector("#audioPlayer2"),
+  url: "url/for/audio"
+});
 ```
 
 ### `VideoPlayer`
@@ -125,10 +125,10 @@ new VideoPlayer(options);
 
 ```js
 import VideoPlayer from "../src/videoPlayer";
-  new VideoPlayer({
-    parent: document.querySelector("#videoPlayer"),
-    url: "url/for/video"
-  });
+new VideoPlayer({
+  parent: document.querySelector("#videoPlayer"),
+  url: "url/for/video"
+});
 ```
 
 ### `MediaPlayer`
@@ -165,12 +165,12 @@ new MediaPlayer(type, options);
 ```js
 import MediaPlayer from "../src/index";
 
-  new MediaPlayer('audio',{
-    parent: document.querySelector("#audioPlayer"),
-    url: "url/for/audio"
-  });
-  new MediaPlayer('video',{
-    parent: document.querySelector("#videoPlayer"),
-    url: "url/for/video"
-  });
+new MediaPlayer('audio',{
+  parent: document.querySelector("#audioPlayer"),
+  url: "url/for/audio"
+});
+new MediaPlayer('video',{
+  parent: document.querySelector("#videoPlayer"),
+  url: "url/for/video"
+});
 ```
