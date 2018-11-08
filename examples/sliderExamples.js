@@ -2,6 +2,7 @@ import RangeSlider from "../src/rangeSlider";
 
 export function runSliderExamples() {
   new RangeSlider(document.querySelector("#slider1"));
+  new RangeSlider(document.querySelector("#slider8"));
 
   new RangeSlider(document.querySelector("#slider2"), {
     className: "my-slider"
