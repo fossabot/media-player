@@ -1,0 +1,33 @@
+body {
+    text-align: center;
+}
+
+.slider-example {
+    margin: 25px 10px;
+}
+
+.slider-example .my-slider .progress-bar {
+    background: darkgray;
+}
+
+.slider-example .my-slider .progress-dragger {
+    background: grey;
+}
+
+.absolute-container{
+    height: 100px;;
+}
+.absolute-slider-wrapper {
+    position: absolute;
+    width: 100%;
+    margin: 0 50px;
+}
+
+.slider-example .container {
+    display: flex;
+    align-items: center;
+}
+
+.slider-example .section {
+    flex: 1;
+}
