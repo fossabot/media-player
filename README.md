@@ -1,5 +1,7 @@
 # media-player
 
+[![CircleCI](https://circleci.com/gh/wayou/media-player.svg?style=svg)](https://circleci.com/gh/wayou/media-player)
+
 Player with ui written in valinna js, that is, framework free.
 
 The main purpose is to usage anywhere regardless of frontend framework ( for example：angular, react).
