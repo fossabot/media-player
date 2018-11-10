@@ -13,10 +13,14 @@
     "build:dev": "rm -rf dist && yarn build:mediaplayer --no-minify",
     "build:docs": "rm -rf docs && parcel build ./examples/index.html --out-dir docs --public-url ./  --no-minify",
     "prepublish": "yarn build:mediaplayer",
-    "test": "yarn build:all && jasmine"
+    "test": "jest"
   },
   "devDependencies": {
-    "jasmine": "^3.3.0",
+    "@babel/core": "*",
+    "@babel/preset-env": "*",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "*",
+    "jest": "*",
     "parcel-bundler": "^1.10.3"
   }
 }

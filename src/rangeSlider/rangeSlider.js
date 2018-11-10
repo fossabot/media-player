@@ -1,9 +1,9 @@
 // reference: https://stackoverflow.com/a/33006528/1553656
 
-import "./rangeSlider.css";
+import './rangeSlider.css';
 
 const defaultOptions = {
-  className: "",
+  className: '',
 
   value: 0,
   draggerSize: 12,
@@ -24,9 +24,9 @@ export default class RangeSlider {
     this.dragger = null;
     this.bar = null;
 
-    this._handleMouseDown = this._handleMouseDown.bind(this);
-    this._handleMouseUp = this._handleMouseUp.bind(this);
-    this._handleMouseMove = this._handleMouseMove.bind(this);
+    this._handleDragStart = this._handleDragStart.bind(this);
+    this._handleDragEnd = this._handleDragEnd.bind(this);
+    this._handleDragging = this._handleDragging.bind(this);
     this._handleResize = this._handleResize.bind(this);
 
     this._init();
@@ -39,7 +39,7 @@ export default class RangeSlider {
   }
 
   _createContainer() {
-    const container = document.createElement("div");
+    const container = document.createElement('div');
     container.className = `range-slider ${this.options.className}`;
     container.style.height = `${this.options.barHeight}px`;
     this.container = container;
@@ -47,40 +47,38 @@ export default class RangeSlider {
   }
 
   _createBar() {
-    const bar = document.createElement("span");
+    const bar = document.createElement('span');
     bar.style.height = `${this.options.barHeight}px`;
     bar.style.paddingLeft = `${this.options.draggerSize / 2}px`;
     bar.style.paddingRight = `${this.options.draggerSize / 2}px`;
-    bar.className = "progress-bar";
+    bar.className = 'progress-bar';
     this.bar = bar;
     return bar;
   }
 
   _createDragger() {
-    const dragger = document.createElement("span");
+    const dragger = document.createElement('span');
     dragger.style.width = `${this.options.draggerSize}px`;
     dragger.style.height = `${this.options.draggerSize}px`;
-    dragger.style.top = `-${(this.options.draggerSize -
-      this.options.barHeight) /
-      2}px`;
-    dragger.className = "progress-dragger";
+    dragger.style.top =
+        `-${(this.options.draggerSize - this.options.barHeight) / 2}px`;
+    dragger.className = 'progress-dragger';
     this.dragger = dragger;
     return dragger;
   }
 
   _calculateValue(position, positionMax) {
     const value =
-      (position * (this.options.max - this.options.min)) / positionMax +
-      this.options.min;
+        (position * (this.options.max - this.options.min)) / positionMax +
+        this.options.min;
     return +value.toFixed(this.options.precision);
   }
 
   _calculatePosition(value) {
     const positionMax = this._getPositionMax();
     return (
-      ((value - this.options.min) * positionMax) /
-      (this.options.max - this.options.min)
-    );
+        ((value - this.options.min) * positionMax) /
+        (this.options.max - this.options.min));
   }
 
   _createSlider() {
@@ -97,8 +95,7 @@ export default class RangeSlider {
 
   _move(event) {
     if (!this.isMoving) return;
-    let min = 0,
-      max = this._getPositionMax();
+    let min = 0, max = this._getPositionMax();
 
     // Instead of using `offsetLeft`, we need to using
     // `getBoundingClientRect().left. Because the offsetLeft is relative to none
@@ -109,8 +106,9 @@ export default class RangeSlider {
     elementLeft += document.documentElement.scrollLeft;
 
     if (elementLeft < 0) elementLeft = Math.abs(elementLeft) / 2;
-    let mousePos = event.pageX - elementLeft - this.dragger.offsetWidth / 2,
-      position = mousePos > max ? max : mousePos < min ? min : mousePos;
+    const pageX = event.pageX || event.touches[0].pageX;
+    let mousePos = pageX - elementLeft - this.dragger.offsetWidth / 2,
+        position = mousePos > max ? max : mousePos < min ? min : mousePos;
 
     const value = this._calculateValue(position, max);
     this.setValue(value);
@@ -130,16 +128,16 @@ export default class RangeSlider {
     this.bar.style.width = `${width}%`;
   }
 
-  _handleMouseDown(event) {
+  _handleDragStart(event) {
     this.isMoving = true;
     this._move(event);
   }
 
-  _handleMouseUp(event) {
+  _handleDragEnd(event) {
     this.isMoving = false;
   }
 
-  _handleMouseMove(event) {
+  _handleDragging(event) {
     this._move(event);
   }
 
@@ -148,22 +146,29 @@ export default class RangeSlider {
   }
 
   _bindEvent(container) {
-    container.addEventListener("mousedown", this._handleMouseDown);
-    document.addEventListener("mouseup", this._handleMouseUp);
-    document.addEventListener("mousemove", this._handleMouseMove);
-    window.addEventListener("resize", this._handleResize, true);
+    container.addEventListener('mousedown', this._handleDragStart);
+    container.addEventListener('touchstart', this._handleDragStart);
+    document.addEventListener('mouseup', this._handleDragEnd);
+    document.addEventListener('touchend', this._handleDragEnd);
+    document.addEventListener('mousemove', this._handleDragging);
+    document.addEventListener('touchmove', this._handleDragging);
+    window.addEventListener('resize', this._handleResize, true);
   }
 
   _removeEvent() {
     if (!this.container) return;
-    this.container.removeEventListener("mousedown", this._handleMouseDown);
-    document.removeEventListener("mouseup", this._handleMouseUp);
-    document.removeEventListener("mousemove", this._handleMouseMove);
+    container.removeEventListener('mousedown', this._handleDragStart);
+    container.removeEventListener('touchstart', this._handleDragStart);
+    document.removeEventListener('mouseup', this._handleDragEnd);
+    document.removeEventListener('touchend', this._handleDragEnd);
+    document.removeEventListener('mousemove', this._handleDragging);
+    document.removeEventListener('touchmove', this._handleDragging);
+    window.removeEventListener('resize', this._handleResize, true);
   }
 
   _render() {
     const slider = this._createSlider();
-    this.parent.innerHTML = "";
+    this.parent.innerHTML = '';
     this.parent.appendChild(slider);
   }
 
