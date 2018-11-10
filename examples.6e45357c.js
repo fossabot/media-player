@@ -123,7 +123,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var defaultOptions = {
-  className: "",
+  className: '',
   value: 0,
   draggerSize: 12,
   barHeight: 2,
@@ -145,9 +145,9 @@ function () {
     this.container = null;
     this.dragger = null;
     this.bar = null;
-    this._handleMouseDown = this._handleMouseDown.bind(this);
-    this._handleMouseUp = this._handleMouseUp.bind(this);
-    this._handleMouseMove = this._handleMouseMove.bind(this);
+    this._handleDragStart = this._handleDragStart.bind(this);
+    this._handleDragEnd = this._handleDragEnd.bind(this);
+    this._handleDragging = this._handleDragging.bind(this);
     this._handleResize = this._handleResize.bind(this);
 
     this._init();
@@ -165,7 +165,7 @@ function () {
   }, {
     key: "_createContainer",
     value: function _createContainer() {
-      var container = document.createElement("div");
+      var container = document.createElement('div');
       container.className = "range-slider ".concat(this.options.className);
       container.style.height = "".concat(this.options.barHeight, "px");
       this.container = container;
@@ -174,22 +174,22 @@ function () {
   }, {
     key: "_createBar",
     value: function _createBar() {
-      var bar = document.createElement("span");
+      var bar = document.createElement('span');
       bar.style.height = "".concat(this.options.barHeight, "px");
       bar.style.paddingLeft = "".concat(this.options.draggerSize / 2, "px");
       bar.style.paddingRight = "".concat(this.options.draggerSize / 2, "px");
-      bar.className = "progress-bar";
+      bar.className = 'progress-bar';
       this.bar = bar;
       return bar;
     }
   }, {
     key: "_createDragger",
     value: function _createDragger() {
-      var dragger = document.createElement("span");
+      var dragger = document.createElement('span');
       dragger.style.width = "".concat(this.options.draggerSize, "px");
       dragger.style.height = "".concat(this.options.draggerSize, "px");
       dragger.style.top = "-".concat((this.options.draggerSize - this.options.barHeight) / 2, "px");
-      dragger.className = "progress-dragger";
+      dragger.className = 'progress-dragger';
       this.dragger = dragger;
       return dragger;
     }
@@ -237,7 +237,8 @@ function () {
 
       elementLeft += document.documentElement.scrollLeft;
       if (elementLeft < 0) elementLeft = Math.abs(elementLeft) / 2;
-      var mousePos = event.pageX - elementLeft - this.dragger.offsetWidth / 2,
+      var pageX = event.pageX || event.touches[0].pageX;
+      var mousePos = pageX - elementLeft - this.dragger.offsetWidth / 2,
           position = mousePos > max ? max : mousePos < min ? min : mousePos;
 
       var value = this._calculateValue(position, max);
@@ -263,20 +264,20 @@ function () {
       this.bar.style.width = "".concat(width, "%");
     }
   }, {
-    key: "_handleMouseDown",
-    value: function _handleMouseDown(event) {
+    key: "_handleDragStart",
+    value: function _handleDragStart(event) {
       this.isMoving = true;
 
       this._move(event);
     }
   }, {
-    key: "_handleMouseUp",
-    value: function _handleMouseUp(event) {
+    key: "_handleDragEnd",
+    value: function _handleDragEnd(event) {
       this.isMoving = false;
     }
   }, {
-    key: "_handleMouseMove",
-    value: function _handleMouseMove(event) {
+    key: "_handleDragging",
+    value: function _handleDragging(event) {
       this._move(event);
     }
   }, {
@@ -287,25 +288,32 @@ function () {
   }, {
     key: "_bindEvent",
     value: function _bindEvent(container) {
-      container.addEventListener("mousedown", this._handleMouseDown);
-      document.addEventListener("mouseup", this._handleMouseUp);
-      document.addEventListener("mousemove", this._handleMouseMove);
-      window.addEventListener("resize", this._handleResize, true);
+      container.addEventListener('mousedown', this._handleDragStart);
+      container.addEventListener('touchstart', this._handleDragStart);
+      document.addEventListener('mouseup', this._handleDragEnd);
+      document.addEventListener('touchend', this._handleDragEnd);
+      document.addEventListener('mousemove', this._handleDragging);
+      document.addEventListener('touchmove', this._handleDragging);
+      window.addEventListener('resize', this._handleResize, true);
     }
   }, {
     key: "_removeEvent",
     value: function _removeEvent() {
       if (!this.container) return;
-      this.container.removeEventListener("mousedown", this._handleMouseDown);
-      document.removeEventListener("mouseup", this._handleMouseUp);
-      document.removeEventListener("mousemove", this._handleMouseMove);
+      container.removeEventListener('mousedown', this._handleDragStart);
+      container.removeEventListener('touchstart', this._handleDragStart);
+      document.removeEventListener('mouseup', this._handleDragEnd);
+      document.removeEventListener('touchend', this._handleDragEnd);
+      document.removeEventListener('mousemove', this._handleDragging);
+      document.removeEventListener('touchmove', this._handleDragging);
+      window.removeEventListener('resize', this._handleResize, true);
     }
   }, {
     key: "_render",
     value: function _render() {
       var slider = this._createSlider();
 
-      this.parent.innerHTML = "";
+      this.parent.innerHTML = '';
       this.parent.appendChild(slider);
     }
   }, {
@@ -911,4 +919,4 @@ var _playerExamples = require("./playerExamples");
 (0, _sliderExamples.runSliderExamples)();
 (0, _playerExamples.runPlayerExamples)();
 },{"./sliderExamples":"UgOA","./playerExamples":"YVY5"}]},{},["Focm"], null)
-//# sourceMappingURL=examples.85f5159c.map
+//# sourceMappingURL=examples.7b3f77e2.map
