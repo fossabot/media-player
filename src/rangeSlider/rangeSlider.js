@@ -94,6 +94,8 @@ export default class RangeSlider {
   }
 
   _move(event) {
+    event.preventDefault();
+    
     if (!this.isMoving) return;
     let min = 0, max = this._getPositionMax();
 

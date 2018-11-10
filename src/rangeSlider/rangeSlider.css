@@ -19,6 +19,9 @@
 }
 
 .range-slider .progress-dragger {
+    /* fix the preventDefault error for touch, see https://stackoverflow.com/a/42288386/1553656 */
+    touch-action: none;
+
     width: 12px;
     height: 12px;
     display: inline-block;
