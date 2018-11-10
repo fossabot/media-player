@@ -176,3 +176,5 @@ new MediaPlayer('video',{
   url: "url/for/video"
 });
 ```
+
+### License
