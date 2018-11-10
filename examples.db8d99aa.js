@@ -225,7 +225,11 @@ function () {
   }, {
     key: "_move",
     value: function _move(event) {
-      event.preventDefault();
+      // this if is need to avoid error, see https://stackoverflow.com/questions/26478267/touch-move-getting-stuck-ignored-attempt-to-cancel-a-touchmove
+      if (event.cancelable) {
+        event.preventDefault();
+      }
+
       if (!this.isMoving) return;
 
       var min = 0,
@@ -920,4 +924,4 @@ var _playerExamples = require("./playerExamples");
 (0, _sliderExamples.runSliderExamples)();
 (0, _playerExamples.runPlayerExamples)();
 },{"./sliderExamples":"UgOA","./playerExamples":"YVY5"}]},{},["Focm"], null)
-//# sourceMappingURL=examples.b29f99ba.map
+//# sourceMappingURL=examples.a80f61f9.map
