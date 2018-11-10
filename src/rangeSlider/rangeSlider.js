@@ -94,8 +94,11 @@ export default class RangeSlider {
   }
 
   _move(event) {
-    event.preventDefault();
-    
+    // this if is need to avoid error, see https://stackoverflow.com/questions/26478267/touch-move-getting-stuck-ignored-attempt-to-cancel-a-touchmove
+    if (event.cancelable) {
+      event.preventDefault();
+    }
+
     if (!this.isMoving) return;
     let min = 0, max = this._getPositionMax();
 
