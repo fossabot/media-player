@@ -1,6 +1,7 @@
 # media-player
 
 [![CircleCI](https://circleci.com/gh/wayou/media-player.svg?style=svg)](https://circleci.com/gh/wayou/media-player)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwayou%2Fmedia-player.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwayou%2Fmedia-player?ref=badge_shield)
 
 Player with ui written in valinna js, that is, framework free.
 
@@ -176,3 +177,6 @@ new MediaPlayer('video',{
   url: "url/for/video"
 });
 ```
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwayou%2Fmedia-player.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwayou%2Fmedia-player?ref=badge_large)
